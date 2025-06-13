@@ -21,7 +21,6 @@ interface Props {
   onSearch?: (value: string) => void;
   value: string;
   placeholder?: string;
-  isSearchable?: boolean;
   className?: string;
 }
 
@@ -31,14 +30,20 @@ export const CommandSelect = ({
   onSearch,
   value,
   placeholder = "Select an option",
-  isSearchable,
+
   className,
 }: Props) => {
   const [open, setOpen] = useState(false);
-  
-  const selectedOptions = options.find(
+
+  const selectedOption = options.find(
     (option) => option.value === value
   );
+
+  const handleOpenChange = (open: boolean) => {
+    onSearch?.("");
+    setOpen(open);
+  };
+
   return (
     <>
       <Button
@@ -47,19 +52,22 @@ export const CommandSelect = ({
         variant={"outline"}
         className={cn(
           "h-9 justify-between font-normal px-2",
-          !selectedOptions && "text-muted-foreground",
+          !selectedOption && "text-muted-foreground",
           className
         )}
       >
-        <div>{selectedOptions?.children ?? placeholder}</div>
+        <div>{selectedOption?.children ?? placeholder}</div>
         <ChevronsUpDownIcon />
       </Button>
       <CommandResponsiveDialog
         shouldFilter={!onSearch}
         open={open}
-        onOpenChange={setOpen}
+        onOpenChange={handleOpenChange}
       >
-        <CommandInput placeholder="Search..." onValueChange={onSearch} />
+        <CommandInput
+          placeholder="Search..."
+          onValueChange={onSearch}
+        />
         <CommandList>
           <CommandEmpty>
             <span className="text-muted-foreground text-sm">
