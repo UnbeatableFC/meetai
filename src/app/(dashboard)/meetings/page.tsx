@@ -1,5 +1,5 @@
 import { auth } from "@/lib/auth";
-import { MeetingsListHeader } from "@/modules/meetings/ui/views/components/meetings-list-header";
+import { MeetingsListHeader } from "@/modules/meetings/ui/components/meetings-list-header";
 import {
   MeetingsViewPage,
   MeetingsViewError,
