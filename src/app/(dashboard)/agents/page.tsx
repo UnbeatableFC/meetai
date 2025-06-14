@@ -36,6 +36,8 @@ const AgentsPage = async ({ searchParams }: Props) => {
     })
   );
 
+ 
+
   return (
     <>
       <AgentsListHeader />
