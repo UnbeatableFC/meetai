@@ -1,6 +1,6 @@
 import { db } from "@/db";
 import { agents } from "@/db/schema";
-import {  createTRPCRouter, protectedProcedure } from "@/trpc/init";
+import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import { agentsInsertSchema, agentsUpdateSchema } from "../schemas";
 import z from "zod";
 import {
@@ -120,7 +120,7 @@ export const agentsRouter = createTRPCRouter({
         .where(
           and(
             eq(agents.userId, ctx.auth.user.id),
-            search ? ilike(agents.name, ` %${search}%`) : undefined
+            search ? ilike(agents.name, `%${search}%`) : undefined
           )
         )
         .orderBy(desc(agents.createdAt), desc(agents.id))
@@ -133,7 +133,7 @@ export const agentsRouter = createTRPCRouter({
         .where(
           and(
             eq(agents.userId, ctx.auth.user.id),
-            search ? ilike(agents.name, ` %${search}%`) : undefined
+            search ? ilike(agents.name, `%${search}%`) : undefined
           )
         );
 
@@ -159,5 +159,4 @@ export const agentsRouter = createTRPCRouter({
 
       return createdAgent;
     }),
-   
 });
