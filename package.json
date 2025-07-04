@@ -8,7 +8,7 @@
     "start": "next start",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
-    "dev:webhook": "https://eminent-swan-formally.ngrok-free.app",
+    "dev:webhook": "https://meetai-8oq6.vercel.app",
     "lint": "next lint"
   },
   "dependencies": {
