@@ -1,6 +1,6 @@
 import { useTRPC } from "@/trpc/client";
 
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import {
   useMutation,
   useQuery,
@@ -43,7 +43,7 @@ export const MeetingForm = ({
   initialValues,
 }: MeetingFormProps) => {
   const trpc = useTRPC();
-  //   const router = useRouter();
+  const router = useRouter();
   const queryClient = useQueryClient();
 
   const [openNewAgentDialog, setOpenNewAgentDialog] = useState(false);
@@ -63,11 +63,19 @@ export const MeetingForm = ({
           trpc.meetings.getMany.queryOptions({})
         );
 
+        await queryClient.invalidateQueries(
+          trpc.premium.getFreeUsage.queryOptions()
+        );
+
         onSuccess?.(data.id);
       },
 
       onError: (error) => {
         toast.error(error.message);
+
+        if (error.data?.code === "FORBIDDEN") {
+          router.push("/upgrade");
+        }
       },
     })
   );

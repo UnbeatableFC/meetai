@@ -1,6 +1,6 @@
 import { useTRPC } from "@/trpc/client";
 import { AgentGetOne } from "../../types";
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import z from "zod";
@@ -34,7 +34,7 @@ export const AgentForm = ({
   initialValues,
 }: AgentFormProps) => {
   const trpc = useTRPC();
-  //   const router = useRouter();
+    const router = useRouter();
   const queryClient = useQueryClient();
 
   const createAgent = useMutation(
@@ -43,12 +43,19 @@ export const AgentForm = ({
         await queryClient.invalidateQueries(
           trpc.agents.getMany.queryOptions({})
         );
+        await queryClient.invalidateQueries(
+          trpc.premium.getFreeUsage.queryOptions()
+        );
 
         onSuccess?.();
       },
 
       onError: (error) => {
         toast.error(error.message);
+
+        if(error.data?.code === "FORBIDDEN") {
+          router.push("/upgrade")
+        }
       },
     })
   );
